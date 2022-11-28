@@ -54,6 +54,13 @@ string vector_to_string(const vector<int> v) {
     }
     return rtn;
 }
+vector<int> string_to_vector(string s) {
+    vector<int> rtn(30);
+    for(int i = 0; i < 30; i++) {
+        rtn[get_index(s[i])] = i;
+    }
+    return rtn;
+}
 
 // Classes
 class Key {

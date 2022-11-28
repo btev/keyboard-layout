@@ -28,8 +28,18 @@ vector<double> k_weights{
      1.1, 1.07, 1.05, 1.05, 1.07,  1.2, 1.05, 1.05, 1.07,  1.1,
     1.05, 1.02,    1,    1,  1.1,  1.1,    1,    1, 1.02, 1.05,
      1.1,  1.1, 1.05, 1.05,  1.2,  1.1, 1.05, 1.05,  1.1,  1.1
+
+     
 };
-vector<vector<double>> bi_weights(30, vector<double>(30));
+
+struct Two_Key {
+    int speed;
+    int o;
+    Two_Key(): speed(0), o(0) {}
+};
+
+vector<vector<Two_Key>> bi_data(30, vector<Two_Key>(30));
+vector<vector<double>> bi_weights(30, vector<double>(30, 0));
 
 double get_weight(int x, int y) {
     Key a(x);
@@ -124,11 +134,11 @@ void readIn() {
     }
 
     // Weights
-    for(int i = 0; i < 30; i++) {
-        for(int j = 0; j < 30; j++) {
-            bi_weights[i][j] = get_weight(i, j);
-        }
-    }
+    // for(int i = 0; i < 30; i++) {
+    //     for(int j = 0; j < 30; j++) {
+    //         bi_weights[i][j] = get_weight(i, j);
+    //     }
+    // }
 }
 
 #endif
