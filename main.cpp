@@ -11,17 +11,22 @@ int main() {
     // * * Main keyboard evolution
     readIn();
     LOCKS.change_locks({});
-    read_weights();
-    calc_weights();
+    // read_weights();
+    // calc_weights();
     
 
-    Layout winner = multi(5000, 100);
-    winner.print();
+    // Layout winner = multi(5000, 100);
+    // winner.print();
     
 
     //type_test(70);
 
     // print_weights();
+
+
+    anecdotal_weights();
+    cout << (int)fitness(string_to_vector("wlypbzfou'crstgmneiaqjvdkxh/,.")) << endl;
+    cout << (int)fitness(string_to_vector("flhvzqwuoysrntkcdeaix;bmjpg,./")) << endl;
 
 
 

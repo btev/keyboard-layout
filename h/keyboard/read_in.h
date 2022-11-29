@@ -41,45 +41,6 @@ struct Two_Key {
 vector<vector<Two_Key>> bi_data(30, vector<Two_Key>(30));
 vector<vector<double>> bi_weights(30, vector<double>(30, 0));
 
-double get_weight(int x, int y) {
-    Key a(x);
-    Key b(y);
-
-    double rtn = k_weights[x] + k_weights[y]; // Base position value (not sure whether to multiply or add)
-
-        // If same-hand
-    if (a.hand == b.hand) { // If same-hand
-        // Same-finger
-        if ( (a.finger) == (b.finger) )
-            rtn *= 2;
-        
-        // Which hand
-        if (!a.hand) { // left
-
-            // Upper-lower
-            if ((a.row | b.row) == 2) {
-                rtn *= 1.5;
-            } // Inward-Roll
-            else if (b.finger > a.finger)
-                rtn *= 0.9; // 0.7
-        }
-        else { // right
-            // Upper-lower
-            if ((a.row | b.row) == 2) {
-                rtn *= 1.5;
-            } // Inward-Roll
-            else if (b.finger < a.finger) 
-                rtn *= 0.9; // 0.7
-        }
-    }
-    else {
-        // Alternate
-        rtn *= 0.9; // 0.9
-    }
-
-    return rtn;
-}
-
 //
 void readIn() {
     ifstream myfile("filtered.txt");
@@ -132,13 +93,6 @@ void readIn() {
             break;
         };
     }
-
-    // Weights
-    // for(int i = 0; i < 30; i++) {
-    //     for(int j = 0; j < 30; j++) {
-    //         bi_weights[i][j] = get_weight(i, j);
-    //     }
-    // }
 }
 
 #endif
