@@ -8,12 +8,12 @@ using namespace std;
 
 #include"../general/general.h"
 
-// Letter super-class of v32
-class Letter: public v32 {
+// Lock super-class of v32
+class Lock: public v32 {
 public: 
     int letter;
-    Letter(int l): letter(l) {}
-    Letter(int l, const vector<int>& v): v32(v), letter(l) {}
+    Lock(int l): letter(l) {}
+    Lock(int l, const vector<int>& v): v32(v), letter(l) {}
 };
 
 class Locks {
@@ -75,7 +75,7 @@ class Locks {
             c_asc[i] = tmp[i].a;
     }
     // don't run this if chars[l.letter] isn't empty
-    void set_letter(const Letter& l) {
+    void set_letter(const Lock& l) {
         chars[l.letter] = l;
         for(int i: l)
             keys[i].push_back(l.letter);
@@ -112,24 +112,24 @@ public:
     Locks(): chars(30), keys(30), c_asc(30) {}
 
 
-    void change_locks(const vector<Letter>& v) {
+    void change_locks(const vector<Lock>& v) {
         chars.clear();
         keys.clear();
 
         // Setting the letters
-        for(Letter l: v)
+        for(Lock l: v)
             set_letter(l);
         
         fill_empty();
         update_sort();
     }
 
-    void change_locks_hands(const vector<Letter>& v, int left_bits = 1066484625) {
+    void change_locks_hands(const vector<Lock>& v, int left_bits = 1066484625) {
         chars.clear();
         keys.clear();
 
         // Setting the letters
-        for(Letter l: v)
+        for(Lock l: v)
             set_letter(l);
         
         set_hands(left_bits);

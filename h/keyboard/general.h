@@ -5,8 +5,8 @@
 #include<vector>
 using namespace std;
 
-// * * Functions
-// Turns the randomized keyboard characters to a number between 0-29
+// * * Functionss
+// Turns the randomized keyboard characters to a number between 0->29
 int get_index(char c) {
     switch(c) {
         case ';':
@@ -18,6 +18,8 @@ int get_index(char c) {
         case '/':
             return 29;
         default:
+            if (c < 'a')
+                return c - 'A';
             return c - 'a';
     }
 }
@@ -32,7 +34,26 @@ char get_char(int i) {
         case 29:
             return '/';
         default:
+            if (i < 0)
+                return i + 'A';
             return i + 'a';
+    }
+}
+
+bool onKeyboard(char c) {
+    switch (c) {
+        case ';':
+            return true;
+        case ',':
+            return true;
+        case '.':
+            return true;
+        case '/':
+            return true;
+        default:
+            if ('a' <= c && c <= 'z')
+                return true;
+            return ('A' <= c) && (c <= 'Z');
     }
 }
 

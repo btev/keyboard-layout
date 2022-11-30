@@ -1,10 +1,11 @@
 #ifndef __KEYBOARD_HEADERS__
 #define __KEYBOARD_HEADERS__
 
-#include"calculator.h"
+//#include"calculator.h"
 #include"general.h"
-#include"generate.h"
+//#include"generate.h"
 #include"locks.h"
 #include"read_in.h"
+#include"display.h"
 
 #endif

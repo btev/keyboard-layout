@@ -167,11 +167,18 @@ vector<Layout> evolve(int generations, int offspring = 50) {
     vector<Layout> winners = gen(offspring);
 
     int unchanged = 0;
-    int score = 0;
+    int score = winners[0].score;
     for(int i = 0; i < generations; i++) {
         winners = gen(winners, offspring);
-        if (winners[0].score == score)
+
+        if (winners[0].score < score) {
+            score = winners[0].score;
+            cout << score << ": " << i << endl;
+            unchanged = 0;
+        }
+        else
             unchanged++;
+
         if (unchanged > 30)
             return winners;
     }
