@@ -7,5 +7,7 @@
 #include"misc.h"
 #include"vector.h"
 #include"global.h"
+#include"algorithms.h"
+#include"input.h"
 
 #endif

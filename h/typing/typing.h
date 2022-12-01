@@ -25,9 +25,8 @@ int since(const auto& a) {
 string random_word(uint size) {
     string rtn;
 
-    while (rtn.size() < size + 1)
+    while (rtn.size() < size)
         rtn.push_back(get_char(rand() % 30));
-    rtn.back() = ' ';
 
     return rtn;
 }
@@ -54,6 +53,21 @@ string random_line(int length, int min = 3, int max = 6) {
     return rtn;
 }
 
+string random_line_exact(int length, int min = 3, int max = 6) {
+    string rtn;
+
+    vector<int> word_lengths = add_to_random(vector_from_to(min + 1, max + 1), length); // +1 because of spaces
+
+    for(int word: word_lengths) {
+        rtn.append(random_word(word - 1));
+        rtn.push_back(' ');
+    }
+
+    rtn.pop_back();
+    return rtn;
+}
+
+
 
 string paragraph(vector<string> v) {
     string rtn;
@@ -62,67 +76,67 @@ string paragraph(vector<string> v) {
     return rtn;
 }
 // * * Load and Save weights
-void write_weights() {
-    ofstream file("weights.txt");
+// void write_weights() {
+//     ofstream file("weights.txt");
 
-    for(int i = 0; i < 30; i++) {
-        for(int j = 0; j < 30; j++) {
-            file << bi_data[i][j].speed << "-" << bi_data[i][j].o << " ";
-        }
-        file << endl;
-    }
-}
+//     for(int i = 0; i < 30; i++) {
+//         for(int j = 0; j < 30; j++) {
+//             file << bi_data[i][j].speed << "-" << bi_data[i][j].o << " ";
+//         }
+//         file << endl;
+//     }
+// }
 
-void read_weights() {
-    ifstream file("weights.txt");
-    if (file.fail())
-        return;
+// void read_weights() {
+//     ifstream file("weights.txt");
+//     if (file.fail())
+//         return;
 
-    char c;
-    int row = 0;
-    int column = 0;
-    string value;
-    while (file.get(c)) {
-        if (c == '-') {
-            bi_data[row][column].speed = stoi(value);
-            value.clear();
-            continue;
-        }
-        if (c != ' ') {
-            value.push_back(c);
-            continue;
-        }
+//     char c;
+//     int row = 0;
+//     int column = 0;
+//     string value;
+//     while (file.get(c)) {
+//         if (c == '-') {
+//             bi_data[row][column].speed = stoi(value);
+//             value.clear();
+//             continue;
+//         }
+//         if (c != ' ') {
+//             value.push_back(c);
+//             continue;
+//         }
 
-        bi_data[row][column].o = stoi(value);
-        value.clear();
+//         bi_data[row][column].o = stoi(value);
+//         value.clear();
 
-        if (++column >= 30) {
-            column = 0;
-            row++;
-        }
-    }
-}
+//         if (++column >= 30) {
+//             column = 0;
+//             row++;
+//         }
+//     }
+// }
 
-void calc_weights() {
-    vector<int> v = string_to_vector("qwertyuiopasdfghjkl;zxcvbnm,./");
-    for(int i = 0; i < 30; i++) {
-        for(int j = 0; j < 30; j++) {
-            if (bi_data[i][j].speed == 0)
-                continue;
-            double avg = double(bi_data[i][j].speed) / bi_data[i][j].o;
-            bi_weights[v[i]][v[j]] = avg;
-        }
-    }
-}
+// void calc_weights() {
+//     vector<int> v = string_to_vector("qwertyuiopasdfghjkl;zxcvbnm,./");
+//     for(int i = 0; i < 30; i++) {
+//         for(int j = 0; j < 30; j++) {
+//             if (bi_data[i][j].speed == 0)
+//                 continue;
+//             double avg = double(bi_data[i][j].speed) / bi_data[i][j].o;
+//             bi_weights[v[i]][v[j]] = avg;
+//         }
+//     }
+// }
 
-void print_weights() {
-    for(int i = 0; i < 30; i++) {
-        for(int j = 0; j < 30; j++) {
-            cout << bi_weights[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
+// void print_weights() {
+//     for(int i = 0; i < 30; i++) {
+//         for(int j = 0; j < 30; j++) {
+//             cout << bi_weights[i][j] << " ";
+//         }
+//         cout << endl;
+//     }
+// }
 
 // * * Type Test
 void clear_print(const vector<string>& s) {
@@ -185,7 +199,7 @@ struct Keystroke {
 
 void type_test(int line_length) {
     hidecursor();
-    read_weights();
+    //read_weights();
 
     auto start = chrono::high_resolution_clock::now();
     auto before = start;
@@ -199,7 +213,7 @@ void type_test(int line_length) {
     vector<string> frame(2);
     while(true) {
         index = 0;
-        frame[0] = (random_line(line_length));
+        frame[0] = (random_line_exact(line_length));
         while (index < frame[0].size()) {
             // Output
             frame[1] = (string(index, ' ') + "^");
@@ -216,7 +230,8 @@ void type_test(int line_length) {
 
             // Verifying char
             if (c == 3)
-                goto exit;
+                return;
+                //goto exit;
             if (c != frame[0][index]) {
                 wrong = true;
                 continue;
@@ -233,16 +248,16 @@ void type_test(int line_length) {
                 previous.key = -1;
                 continue;
             }
-            bi_data[previous.key][current.key].o++;
-            bi_data[previous.key][current.key].speed += (previous.speed + current.speed);
+            //bi_data[previous.key][current.key].o++;
+            //bi_data[previous.key][current.key].speed += (previous.speed + current.speed);
 
             previous = current;
         }
     }
-    exit:
+    //exit:
 
-    calc_weights();
-    write_weights();
+    //calc_weights();
+    //write_weights();
 }
 
 

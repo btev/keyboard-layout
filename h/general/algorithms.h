@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include<vector>
+#include"general.h"
 using namespace std;
 
 // * * Iterative permutations
@@ -77,6 +78,172 @@ void permutation(const string& original, void (*func)(string)) {
             stack.pop_back();
         }
     }
+}
+
+vector<int> add_to_low(const vector<int>& v, int x) {
+    int total = 0;
+    vector<uint> stack;
+
+    stack.push_back(0); // Base value
+    total += v[stack.back()];
+
+    while (total != x) {
+        if (total < x) {
+            if (x - total >= v[0]) {
+                stack.push_back(stack.back());
+                total += v[stack.back()];
+                continue;
+            }
+            if (stack.back() + 1 < v.size()) {
+                total -= v[stack.back()];
+                stack.back()++;
+                total += v[stack.back()];
+                continue;
+            }
+        }
+        total -= v[stack.back()];
+        stack.pop_back();
+        while (stack.back() == v.size() - 1) {
+            total -= v[stack.back()];
+            stack.pop_back();
+        }
+        if (total == 0)
+            return {};
+        total -= v[stack.back()];
+        stack.back()++;
+        total += v[stack.back()];
+    }
+
+    vector<int> rtn;
+    for(uint i = 0; i < stack.size(); i++) {
+        rtn.push_back(v[stack[i]]);
+    }
+    return rtn;
+}
+vector<int> add_to_high(const vector<int>& v, int x) {
+    int total = 0;
+    vector<uint> stack;
+
+    stack.push_back(v.size() - 1); // Base value
+    total += v[stack.back()];
+
+    while (total != x) {
+        if (x - total >= v[0]) { // Push
+            stack.push_back(stack.back());
+            total += v[stack.back()];
+            continue;
+        }
+        else if (stack.back()) { // Decr
+            total -= v[stack.back()];
+            stack.back()--;
+            total += v[stack.back()];
+            continue;
+        }
+
+        total -= v[stack.back()]; // Pop
+        stack.pop_back();
+        while (stack.back() == 0) {
+            total -= v[stack.back()];
+            stack.pop_back();
+        }
+        if (total == 0)
+            return {};
+        total -= v[stack.back()];
+        stack.back()--;
+        total += v[stack.back()];
+    }
+
+    vector<int> rtn;
+    for(uint i = 0; i < stack.size(); i++) {
+        rtn.push_back(v[stack[i]]);
+    }
+    return rtn;
+}
+vector<int> add_to_low(vector<uint> stack, int total, const vector<int>& v, int x) {
+    while (total != x) {
+        if (total < x) {
+            if (x - total >= v[0]) {
+                stack.push_back(stack.back());
+                total += v[stack.back()];
+                continue;
+            }
+            if (stack.back() + 1 < v.size()) {
+                total -= v[stack.back()];
+                stack.back()++;
+                total += v[stack.back()];
+                continue;
+            }
+        }
+        total -= v[stack.back()];
+        stack.pop_back();
+        while (stack.back() == v.size() - 1) {
+            total -= v[stack.back()];
+            stack.pop_back();
+        }
+        if (total == 0)
+            return {};
+        total -= v[stack.back()];
+        stack.back()++;
+        total += v[stack.back()];
+    }
+
+    vector<int> rtn;
+    for(uint i = 0; i < stack.size(); i++) {
+        rtn.push_back(v[stack[i]]);
+    }
+    return rtn;
+}
+vector<int> add_to_high(vector<uint> stack, int total, const vector<int>& v, int x) {
+    while (total != x) {
+        if (x - total >= v[0]) { // Push
+            stack.push_back(stack.back());
+            total += v[stack.back()];
+            continue;
+        }
+        else if (stack.back()) { // Decr
+            total -= v[stack.back()];
+            stack.back()--;
+            total += v[stack.back()];
+            continue;
+        }
+
+        total -= v[stack.back()]; // Pop
+        stack.pop_back();
+        while (stack.back() == 0) {
+            total -= v[stack.back()];
+            stack.pop_back();
+        }
+        if (total == 0)
+            return {};
+        total -= v[stack.back()];
+        stack.back()--;
+        total += v[stack.back()];
+    }
+
+    vector<int> rtn;
+    for(uint i = 0; i < stack.size(); i++) {
+        rtn.push_back(v[stack[i]]);
+    }
+    return rtn;
+}
+
+vector<int> add_to_random(const vector<int>& v, int x) {
+    int total = 0;
+    vector<uint> stack;
+
+    while (total < x) { // Generating a random starting point
+        stack.push_back(rand() % v.size());
+        total += v[stack.back()];
+    }
+    
+    vector<int> rtn;
+
+    rtn = add_to_high(stack, total, v, x);
+    if (rtn.empty()) {
+        rtn = add_to_low(stack, total, v, x);
+    }
+
+    return rtn;
 }
 
 

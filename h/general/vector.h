@@ -48,6 +48,31 @@ vector<T> swap(vector<T> v, int a, int b) {
     return v;
 }
 
+template<class T>
+void print(const vector<T>& v, const string& gap = " ") {
+    for(uint i = 0; i < v.size(); i++) {
+        cout << v[i] << gap;
+    }
+    cout << endl;
+}
+
+// Inclusive
+vector<int> vector_from_to(int from, int to) {
+    vector<int> rtn;
+    for(int i = 0; i < (to - from + 1); i++) {
+        rtn.push_back(from + i);
+    }
+    return rtn;
+}
+
+vector<int> incrementing(int size, int start, int increment) {
+    vector<int> rtn;
+    for(int i = 0; i < size; i++) {
+        rtn.push_back(start + (i * increment));
+    }
+    return rtn;
+}
+
 
 
 /*
