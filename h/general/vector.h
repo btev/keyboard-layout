@@ -152,4 +152,44 @@ public:
     }
 };
 
+// * * mutlidimensional vectors
+
+template<class T>
+class vd: public vector<T> {
+    vector<int> size;
+    void allocate() {
+        if (size.empty())
+            return;
+        
+        int s = size[0];
+        for(uint i = 1; i < size.size(); i++) {
+            s *= size[i];
+        }
+        vector<T>::resize(s);
+    }
+public:
+    //
+    vd(const vector<int>& s): size(s) { allocate(); }
+
+    T& operator[](const vector<int>& ind) {
+        if (ind.size() != size.size())
+            return NULL;
+        int index = 1;
+        for(int i = ind.size(); i >= 0; i--) {
+            if (ind[i] > size[i])
+                return NULL;
+            index *= ind[i];
+        }
+        return vector<T>::operator[](index);
+    }
+};
+
+// template<class T>
+// class vector3D {
+// public:
+//     vector<vector<vector<T>>> vec;
+//     vector3D(int x) {}
+
+// };
+
 #endif

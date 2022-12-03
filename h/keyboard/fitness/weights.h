@@ -6,6 +6,11 @@
 using namespace std;
 #include"../../general/input.h"
 
+/*
+Maybe should have all the weights in one big array.
+Then I could have a bunch of strings with the names in a large array aswell, allowing for easy printing
+*/
+
 class Weights {
 public:
     // General key weights just based on their position on the keyboard
@@ -24,20 +29,27 @@ public:
         1.75
     };
 
-
-    // Using the same finger at the beginning and the end of a sequence. ex: "ki", "cod", "come"
+    // vector<double> SAME_FINGER_BIGRAM{
+    //     1,    // Same-key 1.4
+    //     4.4,    // Home-Lower
+    //     6,      // Upper-Lower
+    //     4.4,     // Home-Upper
+    //     5.2     // Pointer to middle column
+    // };
     vector<double> SAME_FINGER_BIGRAM{
         1,    // Same-key 1.4
         2.2,    // Home-Lower
         3,      // Upper-Lower
-        2.2     // Home-Upper
+        2.2,     // Home-Upper
+        2.6     // Pointer to middle column
     };
 
     vector<double> SAME_FINGER_TRIGRAM{
         1,
         1.4,
         2.2,
-        1.4
+        1.4,
+        1.8
     };
     vector<double> SAME_FINGER_QUADGRAM{
         1,
@@ -73,11 +85,11 @@ public:
     };
 
     vector<double> DOUBLE_ROW_JUMP{
-        1,      // Low-Pointer
+        1.05,      // Low-Pointer
         1.25,   // High-Pointer -> Pinky
         2,      // High-Pointer
 
-        1,      // High-Middle
+        1.1,      // High-Middle
         1.5,    // Low-Middle -> Pinky
         2,      // Low-Middle
 
@@ -104,10 +116,14 @@ public:
 
     // Overall Bonuses (Note these are just the desired percentages in each category, for every category the layout hits it's entire fitness it multiplied by USAGE_MULIPLIER, 0.99x )
     vector<double> FINGER_USAGE{
-        8,
-        11,
-        16,
-        15
+        0.08,
+        0.12,
+        0.16,
+        0.14,
+        0.14,
+        0.16,
+        0.12,
+        0.08,
     };
 
     // * * Functions

@@ -3,9 +3,10 @@
 
 //#include"calculator.h"
 #include"general.h"
-//#include"generate.h"
+#include"generate.h"
 #include"locks.h"
 #include"read_in.h"
-#include"display.h"
+//#include"display.h"
+#include"fitness/fitness.h"
 
 #endif

@@ -5,7 +5,9 @@
 #include<iostream>
 #include<vector>
 #include<bits/stdc++.h> // vector sort
-#include"calculator.h"
+#include"fitness/calculation.h"
+#include"fitness/fitness.h"
+#include"fitness/weights.h"
 using namespace std;
 
 #include"read_in.h"
@@ -47,7 +49,7 @@ bool compare_layout_reverse(const Layout& a, const Layout& b) {
 }
 
 // All other layouts stemming from the original, with two characters swapped
-vector<Layout> equivalents(Layout original, double num = 5) {
+vector<Layout> equivalents(Layout original, int num = 5) {
     vector<Layout> equals;
     equals.push_back(original);
 
@@ -173,7 +175,7 @@ vector<Layout> evolve(int generations, int offspring = 50) {
 
         if (winners[0].score < score) {
             score = winners[0].score;
-            cout << score << ": " << i << endl;
+            //cout << score << ": " << i << endl;
             unchanged = 0;
         }
         else
@@ -191,6 +193,7 @@ Layout multi(int species, int generations, int offspring = 50) {
     Layout winner = evolve(generations, offspring)[0];
 
     for(int i = 0; i < species; i++) {
+        cout << i << endl;
         Layout elite = evolve(generations, offspring)[0];
         if (elite.score < winner.score) {
             winner = elite;

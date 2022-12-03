@@ -34,10 +34,30 @@ struct Two_Key {
 //
 vector<vector<Two_Key>> bi_data(30, vector<Two_Key>(30));
 vector<vector<vector<vector<double> > > > ALL_QUADGRAM_WEIGHTS(31, vector<vector<vector<double> > >(31, vector<vector<double> >(31, vector<double>(31))));
-v4d QUADS(31, v3d(31, v2d(31, vector<int>(31))));
 
-void print_quads() {
+vector<vector<vector<int>>> ALL_TRIPLES(31, vector<vector<int>>(31, vector<int>(31, 0)));
 
+struct TRIPLE {
+    vector<int> word;
+    int count;
+    TRIPLE(int c): count(c) {}
+    TRIPLE(const vector<int> w): word(w) {}
+    TRIPLE(const vector<int> w, int c): word(w), count(c) {}
+};
+
+vector<TRIPLE> TRIPLES;
+
+void condense() {
+    for(int i = 0; i < 31; i++) {
+        for(int j = 0; j < 31; j++) {
+            for(int k = 0; k < 31; k++) {
+                if (ALL_TRIPLES[i][j][k]) {
+                    TRIPLES.push_back(ALL_TRIPLES[i][j][k]);
+                    TRIPLES.back().word = {i, j, k};
+                }
+            }
+        }
+    }
 }
 
 //
@@ -46,9 +66,10 @@ void readIn() {
     vector<int> word;
     char c;
     
-    char tmp[4];
-    myfile.read(tmp, 3);
-    for(int i = 0; i < 3; i++) {
+    // get trip
+    char tmp[3];
+    myfile.read(tmp, 2);
+    for(int i = 0; i < 2; i++) {
         if (!onKeyboard(c))
             word.push_back(30);
         else
@@ -56,8 +77,8 @@ void readIn() {
     }
 
     int i = 0;
-    while(myfile.get(c) && i < 1000000) { //  && i < 1000000
-        i++;
+    while(myfile.get(c) && i < 10000000) { //  && i < 1000000
+        //i++;
         if (!onKeyboard(c))
             word.push_back(30);
         else {
@@ -69,53 +90,30 @@ void readIn() {
                 capitals[index]++;
                 TOTAL_CAPITALS++;
             }
+            else if (c == ':') {
+                capitals[26]++;
+                TOTAL_CAPITALS++;
+            }
+            else if (c == '<') {
+                capitals[27]++;
+                TOTAL_CAPITALS++;
+            }
+            else if (c == '>') {
+                capitals[28]++;
+                TOTAL_CAPITALS++;
+            }
+            else if (c == '?') {
+                capitals[29]++;
+                TOTAL_CAPITALS++;
+            }
             TOTAL_CHARACTERS++;
             word.push_back(index);
         }
 
-        QUADS[word[0]][word[1]][word[2]][word[3]]++;
+        ALL_TRIPLES[word[0]][word[1]][word[2]]++;
         word = remove_index(word, 0); // remove first index
-
-        // if ('A' <= c && c <= 'Z') {
-        //     capitals[c - 'A'] += 1;
-        //     c += 32;
-        // }
-        // else if (c != ';' && c != '/' && c != '.' && c != ',' && !('a' <= c && c <= 'z') ) {
-        //     word.clear();
-        //     continue;
-        // }
-        
-        // word.push_back(c);
-        // int len = word.length();
-        // switch (len) 
-        // {
-        // case 1:
-        //     TOTAL_CHARACTERS += 1;
-        //     singles[get_index(c)] += 1;
-        //     break;
-        // case 2:
-        //     TOTAL_CHARACTERS += 1;
-        //     TOTAL_BIGRAMS += 1;
-        //     singles[get_index(c)] += 1;
-        //     doubles[word] += 1;
-        //     break;
-        // case 3:
-        //     TOTAL_CHARACTERS += 1;
-        //     TOTAL_BIGRAMS += 1;
-        //     TOTAL_TRIGRAMS += 1;
-        //     singles[get_index(c)] += 1;
-        //     doubles[word.substr(1)] += 1;
-        //     triples[word] += 1;
-        //     break;
-        // default: // 4 or greater
-        //     TOTAL_CHARACTERS += 1;
-        //     TOTAL_BIGRAMS += 1;
-        //     TOTAL_TRIGRAMS += 1;
-        //     TOTAL_QUADGRAMS += 1;
-        //     quads[word.substr(len - 4)] += 1;
-        //     break;
-        // };
     }
+    condense();
 }
 
 #endif

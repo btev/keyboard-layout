@@ -21,6 +21,11 @@ void print_buffer(string s, unsigned int b) {
     cout << string(b - s.size(), ' ') << s;
 }
 
+void print_line(string s, unsigned int b, double data) {
+    print_buffer(s, b);
+    cout << ": " << to_string(data) << endl;
+}
+
 
 // * * Char
 bool isAlphabetical(char& c) { // Also changes 'A' -> 'a'

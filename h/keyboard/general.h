@@ -57,17 +57,7 @@ bool onKeyboard(char c) {
     }
 }
 
-// Prints string in a keyboard like fashion
-void print_keyboard(string s, int spacing = 0) {
-    for(int i = 0; i < 3; i++) {
-        cout << string(spacing, ' ');
-        for(int j = 0; j < 10; j++) {
-            cout << s[(i * 10) + j] << " ";
-        }
-        cout << endl;
-    }
-}
-
+// string to vec
 string vector_to_string(const vector<int> v) {
     string rtn(30, ' ');
     for(int i = 0; i < 30; i++) {
@@ -82,6 +72,28 @@ vector<int> string_to_vector(string s) {
     }
     return rtn;
 }
+
+// Prints string in a keyboard like fashion
+void print_keyboard(string s, int spacing = 0) {
+    for(int i = 0; i < 3; i++) {
+        cout << string(spacing, ' ');
+        for(int j = 0; j < 10; j++) {
+            cout << s[(i * 10) + j] << " ";
+        }
+        cout << endl;
+    }
+}
+void print_keyboard(const vector<int>& v, int spacing = 0) {
+    string s = vector_to_string(v);
+    for(int i = 0; i < 3; i++) {
+        cout << string(spacing, ' ');
+        for(int j = 0; j < 10; j++) {
+            cout << s[(i * 10) + j] << " ";
+        }
+        cout << endl;
+    }
+}
+
 
 // Classes
 class Key {
